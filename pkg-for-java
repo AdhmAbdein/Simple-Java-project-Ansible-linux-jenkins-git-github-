@@ -1,0 +1,39 @@
+---
+- name: install all packeges that need to run java app
+  hosts: all
+  become: yes
+  tasks:
+    - name: update apt cache
+      apt:
+        update_cache: yes
+
+    - name: install open jdk
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: install maven
+      apt:
+        name: maven
+        state: present
+
+    - name: install junit
+      apt:
+        name: junit
+        state: present
+
+    - name: java version
+      command: java -version
+      register: java_version
+
+    - name: print java version
+      debug:
+        msg: "{{ java_version.stdout }}"
+
+    - name: maven version
+      command: mvn -version
+      register: mvn_version
+
+    - name: print maven version
+      debug:
+        msg: "{{ mvn_version.stdout }}"
